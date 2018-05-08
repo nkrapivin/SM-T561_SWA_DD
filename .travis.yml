@@ -14,3 +14,4 @@ script:
   - export SUBARCH=arm
   - make ARCH=arm SUBARCH=arm gtel3g_defconfig
   - make ARCH=arm SUBARCH=arm -j4
+  - ./result.sh
