@@ -239,14 +239,6 @@ static void inode_free_rcu(struct rcu_head *head)
 	kmem_cache_free(sel_inode_cache, isec);
 }
 
-static void inode_free_rcu(struct rcu_head *head)
-{
-	struct inode_security_struct *isec;
-
-	isec = container_of(head, struct inode_security_struct, rcu);
-	kmem_cache_free(sel_inode_cache, isec);
-}
-
 static void inode_free_security(struct inode *inode)
 {
 	struct inode_security_struct *isec = inode->i_security;
@@ -3900,30 +3892,6 @@ static int selinux_skb_peerlbl_sid(struct sk_buff *skb, u16 family, u32 *sid)
 	}
 
 	return 0;
-}
-
-/**
- * selinux_conn_sid - Determine the child socket label for a connection
- * @sk_sid: the parent socket's SID
- * @skb_sid: the packet's SID
- * @conn_sid: the resulting connection SID
- *
- * If @skb_sid is valid then the user:role:type information from @sk_sid is
- * combined with the MLS information from @skb_sid in order to create
- * @conn_sid.  If @skb_sid is not valid then then @conn_sid is simply a copy
- * of @sk_sid.  Returns zero on success, negative values on failure.
- *
- */
-static int selinux_conn_sid(u32 sk_sid, u32 skb_sid, u32 *conn_sid)
-{
-	int err = 0;
-
-	if (skb_sid != SECSID_NULL)
-		err = security_sid_mls_copy(sk_sid, skb_sid, conn_sid);
-	else
-		*conn_sid = sk_sid;
-
-	return err;
 }
 
 /**
