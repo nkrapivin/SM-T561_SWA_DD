@@ -36,10 +36,14 @@ static unsigned int help(struct sk_buff *skb,
 	char buffer[sizeof("4294967296 65635")];
 	struct nf_conn *ct = exp->master;
 	union nf_inet_addr newaddr;
+	struct nf_conn *ct = exp->master;
+	union nf_inet_addr newaddr;
 	u_int16_t port;
 	unsigned int ret;
 
 	/* Reply comes from server. */
+	newaddr = ct->tuplehash[IP_CT_DIR_REPLY].tuple.dst.u3;
+
 	newaddr = ct->tuplehash[IP_CT_DIR_REPLY].tuple.dst.u3;
 
 	exp->saved_proto.tcp.port = exp->tuple.dst.u.tcp.port;
