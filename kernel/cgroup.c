@@ -1318,7 +1318,7 @@ static void drop_parsed_module_refcounts(unsigned long subsys_mask)
 		unsigned long bit = 1UL << i;
 
 		if (!(bit & subsys_mask))
-			goto next;
+			continue;
 		module_put(subsys[i]->module);
 	}
 }
