@@ -19,5 +19,5 @@ echo " "
 curl --upload-file ./drivers/autotst/autotst.ko https://transfer.sh/autotst.ko
 echo " "
 
-echo So you now know where everything is and leaked LOLOLOLOLOLOL;
+echo Files uploaded;
 
