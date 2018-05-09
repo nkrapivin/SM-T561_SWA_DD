@@ -1318,7 +1318,7 @@ static void drop_parsed_module_refcounts(unsigned long subsys_mask)
 		unsigned long bit = 1UL << i;
 
 		if (!(bit & subsys_mask))
-			continue;
+			goto next;
 		module_put(subsys[i]->module);
 	}
 }
@@ -2756,12 +2756,12 @@ static int cgroup_addrm_files(struct cgroup *cgrp, struct cgroup_subsys *subsys,
 	for (cft = cfts; cft->name[0] != '\0'; cft++) {
 		/* does cft->flags tell us to skip this file on @cgrp? */
 		if ((cft->flags & CFTYPE_INSANE) && cgroup_sane_behavior(cgrp))
-			continue;
+			goto next;
 		if ((cft->flags & CFTYPE_NOT_ON_ROOT) && !cgrp->parent)
 			continue;
 		if ((cft->flags & CFTYPE_ONLY_ON_ROOT) && cgrp->parent)
 			continue;
-
+	next:
 		if (is_add) {
 			err = cgroup_add_file(cgrp, subsys, cft);
 			if (err)
