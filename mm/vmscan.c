@@ -2117,7 +2117,7 @@ static inline bool should_continue_reclaim(struct zone *zone,
 
 static void shrink_zone(struct zone *zone, struct scan_control *sc)
 {
-static unsigned long zone_reclaimable_pages(struct zone *zone)
+unsigned long zone_reclaimable_pages(struct zone *zone)
 {
 	int nr;
 
