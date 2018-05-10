@@ -3958,7 +3958,7 @@ static int selinux_socket_create(int family, int type,
 				 int protocol, int kern)
 {
 	const struct task_security_struct *tsec = current_security();
-	u32 connsid;
+	u32 newsid;
 	u16 secclass;
 	int rc;
 
