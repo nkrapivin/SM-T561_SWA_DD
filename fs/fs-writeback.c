@@ -91,7 +91,7 @@ static void bdi_wakeup_thread(struct backing_dev_info *bdi)
 {
 	spin_lock_bh(&bdi->wb_lock);
 	if (test_bit(BDI_registered, &bdi->state))
-		mod_delayed_work(bdi_wq, &bdi->wb.dwork, 0);
+		bdi_wakeup_thread(bdi);
 	spin_unlock_bh(&bdi->wb_lock);
 }
 
@@ -107,7 +107,7 @@ static void bdi_queue_work(struct backing_dev_info *bdi,
 		goto out_unlock;
 	}
 	list_add_tail(&work->list, &bdi->work_list);
-	mod_delayed_work(bdi_wq, &bdi->wb.dwork, 0);
+	bdi_wakeup_thread(bdi);
 out_unlock:
 	spin_unlock_bh(&bdi->wb_lock);
 }
