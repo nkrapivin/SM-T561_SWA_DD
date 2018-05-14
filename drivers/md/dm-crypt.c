@@ -44,6 +44,7 @@ struct convert_context {
 	sector_t cc_sector;
 	atomic_t cc_pending;
 	struct ablkcipher_request *req;
+	struct ablkcipher_request *req;
 };
 
 /*
@@ -876,6 +877,7 @@ static void crypt_dec_pending(struct dm_crypt_io *io)
 	struct crypt_config *cc = io->cc;
 	struct bio *base_bio = io->base_bio;
 	struct dm_crypt_io *base_io = io->base_io;
+	io->ctx.req = NULL;
 	int error = io->error;
 
 	if (!atomic_dec_and_test(&io->io_pending))
@@ -901,6 +903,8 @@ static void crypt_dec_pending(struct dm_crypt_io *io)
  * interrupt context.
  *
  * kcryptd performs the actual encryption or decryption.
+	if (io->ctx.req)
+		mempool_free(io->ctx.req, cc->req_pool);
  *
  * kcryptd_io performs the IO submission.
  *
