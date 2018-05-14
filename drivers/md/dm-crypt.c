@@ -44,7 +44,6 @@ struct convert_context {
 	sector_t cc_sector;
 	atomic_t cc_pending;
 	struct ablkcipher_request *req;
-	struct ablkcipher_request *req;
 };
 
 /*
